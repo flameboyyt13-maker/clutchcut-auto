@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d14"><title>ClutchCut Auto — Gaming Montage Maker</title>
+<style>
+:root{color-scheme:dark;--bg:#080d14;--panel:#111b28;--line:#29394c;--txt:#eef4fb;--muted:#9eacbd;--lime:#baff4a;--cyan:#61dff0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% 0,#193048 0,transparent 38%),var(--bg);color:var(--txt);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:18px 17px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#080d14ed;backdrop-filter:blur(12px);z-index:5}.brand{font-weight:950;letter-spacing:1.6px;font-size:21px}.brand span{color:var(--lime)}.tag{color:var(--muted);font-size:11px}
+main{max-width:760px;margin:auto;padding:15px 13px 45px}.hero{padding:12px 3px 17px}.eyebrow{color:var(--lime);font-size:10px;font-weight:900;letter-spacing:2px}.hero h1{font-size:30px;line-height:1.06;margin:8px 0}.hero p,.muted{color:var(--muted);line-height:1.5}.hero p{font-size:13px;margin:0}
+.card{background:linear-gradient(145deg,#142131,#0e1722);border:1px solid var(--line);border-radius:17px;padding:15px;margin:12px 0;box-shadow:0 10px 26px #0003}h2{font-size:15px;margin:0 0 9px}.hint{font-size:11px;color:var(--muted);line-height:1.5;margin:0 0 12px}
+.drop{display:block;text-align:center;padding:18px 10px;border:1px dashed #63758b;border-radius:13px;background:#0a121c;cursor:pointer}.drop b{display:block;margin:5px}.drop small{color:var(--muted);font-size:11px}input[type=file]{display:none}
+button,select,input[type=text]{font:inherit}button{border:0;border-radius:11px;background:var(--lime);color:#10170a;font-weight:850;padding:13px 14px;cursor:pointer}button.secondary{background:#1c2b3d;border:1px solid #354960;color:var(--txt)}button:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row button{flex:1;min-width:120px}
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.style{border:1px solid var(--line);background:#0a121c;border-radius:12px;padding:11px 5px;text-align:center;cursor:pointer}.style.active{border-color:var(--lime);background:#182416;box-shadow:inset 0 0 0 1px var(--lime)}.style b{display:block;font-size:12px}.style small{color:var(--muted);font-size:10px}
+.field{display:block;color:var(--muted);font-size:11px;margin:12px 0 5px}input[type=text],select{width:100%;padding:11px;background:#09111b;border:1px solid #35485d;color:var(--txt);border-radius:10px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.option{background:#0b1420;border:1px solid #29394c;border-radius:11px;padding:10px}.option label{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.option select{padding:8px;font-size:12px}
+#clipList{list-style:none;margin:10px 0 0;padding:0}#clipList li{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid #263649;font-size:12px}#clipList li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#clipList li button{padding:6px 9px;font-size:11px;background:#26384b;color:white}
+video{display:block;width:100%;max-height:370px;background:#000;border-radius:11px}canvas{display:none}.status{font-size:11px;color:var(--muted);min-height:18px;margin-top:10px;line-height:1.45}.progress{height:7px;background:#253448;border-radius:20px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--lime);transition:width .15s}.pill{display:inline-block;color:var(--lime);background:#20321c;border-radius:30px;padding:4px 8px;font-size:10px;font-weight:900}
+.note{font-size:11px;line-height:1.55;color:var(--muted)}footer{text-align:center;color:#718196;font-size:10px;padding:16px}
+@media(max-width:390px){.hero h1{font-size:27px}.options{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div class="brand">CLUTCH<span>CUT</span> AUTO</div><div class="tag">Automatic gaming montage maker • prototype</div></header>
+<main>
+<section class="hero"><div class="eyebrow">AUTO EDIT • MULTI-CLIP • FREE</div><h1>Your clips in.<br>Montage out.</h1><p>Select your already-cut Free Fire or BGMI clips. ClutchCut automatically joins them in order, applies one visual theme and exports one montage.</p></section>
+<section class="card">
+<h2>01 — Add your clips</h2><p class="hint">Select multiple clips together. The app joins them in the order shown. Use short clips for the smoothest result.</p>
+<label class="drop" for="files"><div style="font-size:25px">＋</div><b>Add gameplay clips</b><small>Choose multiple MP4 / WebM videos</small></label><input id="files" type="file" accept="video/*" multiple>
+<ul id="clipList"></ul><div class="status" id="fileStatus">No clips selected.</div>
+</section>
+<section class="card">
+<h2>02 — Choose an automatic edit</h2>
+<div class="styles">
+<div class="style active" data-style="clutch"><b>⚡ CLUTCH</b><small>Bold title + punchy look</small></div>
+<div class="style" data-style="montage"><b>🔥 MONTAGE</b><small>Gaming label + title</small></div>
+<div class="style" data-style="clean"><b>🎯 CLEAN</b><small>Minimal overlay</small></div>
+</div>
+<label class="field" for="title">Montage title</label><input id="title" type="text" maxlength="44" value="INSANE GAMEPLAY">
+<div class="options">
+<div class="option"><label for="game">GAME</label><select id="game"><option>FREE FIRE</option><option>BGMI</option><option>GAMING</option></select></div>
+<div class="option"><label for="ratio">VIDEO FORMAT</label><select id="ratio"><option value="source">Keep source shape</option><option value="vertical">Shorts / Reels 9:16</option><option value="wide">YouTube 16:9</option></select></div>
+<div class="option"><label for="ending">ENDING</label><select id="ending"><option value="title">Add title card</option><option value="none">No title card</option></select></div>
+<div class="option"><label for="quality">EXPORT QUALITY</label><select id="quality"><option value="5">Standard (5 Mbps)</option><option value="8">High (8 Mbps)</option><option value="3">Smaller file (3 Mbps)</option></select></div>
+</div>
+</section>
+<section class="card">
+<h2>03 — Automatic preview & export</h2><p class="hint">Preview the first selected clip. Export processes the full playlist automatically; keep this page open until it finishes.</p>
+<video id="player" controls playsinline></video><canvas id="canvas"></canvas>
+<div class="row" style="margin-top:11px"><button class="secondary" id="preview" disabled>Preview first clip</button><button id="export" disabled>Make my montage</button></div>
+<div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">Add at least one clip to begin.</div>
+</section>
+<section class="card"><h2>What is automatic in this version?</h2><p class="note">✓ Joins all selected clips into one video<br>✓ Applies your chosen title/theme to every clip<br>✓ Optional intro/outro title card<br>✓ Can resize/crop to vertical or widescreen<br>✓ Exports one downloadable montage<br><br><b>Limit:</b> This is automatic editing, not AI gameplay understanding. It does not yet detect kills/headshots, choose the best moments, add copyrighted music, or create smart beat-sync. It exports in a browser-supported format (usually WebM). Audio support depends on your browser.</p></section>
+<footer>CLUTCHCUT AUTO • v0.2 • Your clips are processed locally in this browser</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s), input=$('#files'), list=$('#clipList'), video=$('#player'), canvas=$('#canvas'),ctx=canvas.getContext('2d');
+let files=[],urls=[],style='clutch',running=false;
+function msg(t){$('#status').textContent=t}
+function updateList(){list.innerHTML='';files.forEach((f,i)=>{let li=document.createElement('li'),sp=document.createElement('span'),sz=document.createElement('small'),rm=document.createElement('button');sp.textContent=(i+1)+'. '+f.name;sz.textContent=(f.size/1048576).toFixed(1)+' MB';rm.textContent='Remove';rm.onclick=()=>{files.splice(i,1);refresh()};li.append(sp,sz,rm);list.append(li)});$('#fileStatus').textContent=files.length?files.length+' clip(s) ready. Remove any clip you do not want.':'No clips selected.';$('#preview').disabled=!files.length;$('#export').disabled=!files.length||running}
+function refresh(){urls.forEach(URL.revokeObjectURL);urls=files.map(f=>URL.createObjectURL(f));updateList();if(files.length){video.src=urls[0];video.load()}else{video.removeAttribute('src');video.load()}}
+input.onchange=()=>{files=Array.from(input.files||[]).filter(f=>f.type.startsWith('video/'));refresh();msg(files.length?'Ready to create your montage.':'No supported videos found.')};
+document.querySelectorAll('.style').forEach(el=>el.onclick=()=>{document.querySelectorAll('.style').forEach(x=>x.classList.remove('active'));el.classList.add('active');style=el.dataset.style;draw()});
+function dimensions(w,h){let mode=$('#ratio').value;if(mode==='vertical')return [720,1280];if(mode==='wide')return [1280,720];let scale=Math.min(1280/w,1280/h,1);return [Math.max(2,Math.round(w*scale/2)*2),Math.max(2,Math.round(h*scale/2)*2)]}
+function draw(titleOverride){if(video.readyState<2)return;let vw=video.videoWidth||720,vh=video.videoHeight||1280,[w,h]=dimensions(vw,vh);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
+ctx.fillStyle='#000';ctx.fillRect(0,0,w,h);let mode=$('#ratio').value;
+let scale=Math.max(w/vw,h/vh),dw=vw*scale,dh=vh*scale;ctx.drawImage(video,(w-dw)/2,(h-dh)/2,dw,dh);
+let title=titleOverride||$('#title').value.trim()||'GAMEPLAY',game=$('#game').value;
+if(style!=='clean'){ctx.fillStyle='rgba(0,0,0,.48)';ctx.fillRect(0,h*.055,w,h*.15)}
+ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#000';ctx.shadowBlur=9;ctx.fillStyle=style==='clutch'?'#c6ff58':'#fff';ctx.font='900 '+Math.max(23,Math.floor(w*.052))+'px system-ui';ctx.fillText(title.toUpperCase().slice(0,44),w/2,h*.105,w*.9);ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='800 '+Math.max(12,Math.floor(w*.022))+'px system-ui';ctx.fillText(game,w/2,h*.17,w*.8);
+if(style==='montage'){ctx.fillStyle='#c6ff58';ctx.font='900 '+Math.max(12,Math.floor(w*.023))+'px system-ui';ctx.fillText('GAMEPLAY HIGHLIGHTS',w/2,h*.91,w*.85)}
+}
+let previewRAF;function previewDraw(){draw();if(!video.paused&&!video.ended)previewRAF=requestAnimationFrame(previewDraw)}
+$('#preview').onclick=()=>{if(!files.length)return;video.src=urls[0];video.currentTime=0;video.play().then(()=>{cancelAnimationFrame(previewRAF);previewDraw()}).catch(()=>msg('Tap play on the preview video.'))};video.onpause=()=>cancelAnimationFrame(previewRAF);video.onseeked=()=>draw();
+function waitEvent(el,event){return new Promise((resolve,reject)=>{let timer=setTimeout(()=>reject(new Error('Video took too long to load.')),20000);el.addEventListener(event,()=>{clearTimeout(timer);resolve()}, {once:true});el.addEventListener('error',()=>{clearTimeout(timer);reject(new Error('A clip could not be decoded by this browser.'))},{once:true})})}
+function loadVideo(url){return new Promise((resolve,reject)=>{video.pause();video.src=url;video.load();let done=()=>resolve();let err=()=>reject(new Error('Could not read one of your video clips.'));video.addEventListener('loadeddata',done,{once:true});video.addEventListener('error',err,{once:true})})}
+$('#export').onclick=async()=>{
+ if(!files.length||running)return;if(!window.MediaRecorder||!canvas.captureStream){msg('Your browser does not support video export. Try updated Chrome.');return}
+ running=true;updateList();$('#bar').style.width='0%';let stream,rec,audioCtx;
+ try{
+  await loadVideo(urls[0]);draw();stream=canvas.captureStream(30);
+  // Capture the active video audio through Web Audio when the browser permits it.
+  try{audioCtx=new AudioContext();let source=audioCtx.createMediaElementSource(video);let dest=audioCtx.createMediaStreamDestination();source.connect(dest);source.connect(audioCtx.destination);dest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));await audioCtx.resume()}catch(e){}
+  let mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(x=>MediaRecorder.isTypeSupported(x))||'';
+  let bitrate=Number($('#quality').value)*1000000,rec=new MediaRecorder(stream,{...(mime?{mimeType:mime}:{}),videoBitsPerSecond:bitrate}),chunks=[];
+  rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+  let stopped=new Promise(resolve=>rec.onstop=resolve);rec.start(500);
+  const title=$('#title').value.trim()||'GAMEPLAY';
+  if($('#ending').value==='title'){ctx.fillStyle='#070c13';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.textAlign='center';ctx.fillStyle='#c5ff55';ctx.font='900 '+Math.floor(canvas.width*.065)+'px system-ui';ctx.fillText(title.toUpperCase(),canvas.width/2,canvas.height/2,canvas.width*.88);ctx.fillStyle='#fff';ctx.font='700 '+Math.floor(canvas.width*.027)+'px system-ui';ctx.fillText($('#game').value+' • HIGHLIGHTS',canvas.width/2,canvas.height*.58,canvas.width*.8);await new Promise(r=>setTimeout(r,1400))}
+  for(let i=0;i<urls.length;i++){
+   msg('Editing clip '+(i+1)+' of '+urls.length+' — keep this page open.');
+   if(i>0)await loadVideo(urls[i]);
+   draw();await video.play();
+   await new Promise((resolve,reject)=>{let ended=()=>{cleanup();resolve()},error=()=>{cleanup();reject(new Error('Playback failed on clip '+(i+1)))};let cleanup=()=>{video.removeEventListener('ended',ended);video.removeEventListener('error',error)};video.addEventListener('ended',ended,{once:true});video.addEventListener('error',error,{once:true});let frame=()=>{if(!video.paused&&!video.ended){draw();requestAnimationFrame(frame)}};requestAnimationFrame(frame)});
+   $('#bar').style.width=Math.round((i+1)/urls.length*90)+'%';
+  }
+  rec.stop();await stopped;let blob=new Blob(chunks,{type:rec.mimeType||'video/webm'});let link=document.createElement('a'),u=URL.createObjectURL(blob);link.href=u;link.download='clutchcut-auto-montage.webm';link.click();setTimeout(()=>URL.revokeObjectURL(u),60000);$('#bar').style.width='100%';msg('Montage exported! Check your Downloads folder.');stream.getTracks().forEach(t=>t.stop());if(audioCtx)await audioCtx.close();
+ }catch(err){if(stream)stream.getTracks().forEach(t=>t.stop());msg('Could not finish export: '+err.message+' Try fewer/shorter clips or a supported MP4/WebM file.')}
+ finally{running=false;updateList()}
+};
+</script></body></html>
